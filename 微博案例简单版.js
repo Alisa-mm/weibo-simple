@@ -21,9 +21,9 @@ btn.onclick = function(){
     // 动态生成新的li
     let li = document.createElement('li');
     // 给li里面添加内容
-    // li.innerHTML ='<li><p>'+content+'</p><span>删除</span></li>'
+    // li.innerHTML ='<p>'+content+'</p><span>删除</span>'
     // 上面的写法可以用模板字符串解决字符串的拼接问题(不用++了)
-    li.innerHTML = ` <li><p>${content}</p><span>删除</span></li>`;
+    li.innerHTML = `<p>${content}</p><span>删除</span>`;
     // 用document.createElement创建的元素要手动添加进去才有效
     // 要把后来写的放在前面
     let first = ul.children[0];
@@ -31,8 +31,24 @@ btn.onclick = function(){
 
     // 清空文本域的内容
     text.value = '';
-    
-    
-    
-
 }
+
+/* 实现组合键发布  ctrl + 回车 */
+    // 给文本域注册键盘事件
+    text.onkeydown = function (e) {
+        /* 判断是否按下了 ctrl + 回车 */
+        if (e.keyCode === 13 && e.ctrlKey) {
+            // 实现发布效果
+            btn.onclick();
+        }
+    }
+
+ /* 实现使用事件委托删除内容（包括新发布的） */
+// 找到存在的元素ul，委托ul帮我们实现给span注册事件的效果
+ul.addEventListener('click',function(e){
+    if(e.target.nodeName === 'SPAN'){
+        // 就把它对应的li移除
+        let li = e.target.parentNode;
+        ul.removeChild(li);
+    }
+})
